@@ -1,6 +1,6 @@
 # Virtual Teacher
 
-![Virtual Teacher Preview](output.gif)
+![Virtual Teacher Preview](output0.gif)
 
 ## Introduction
 
