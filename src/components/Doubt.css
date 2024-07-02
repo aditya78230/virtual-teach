@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Roboto Mono", monospace;
+}
+
+.main {
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main .image-container {
+  padding: 10px;
+}
+
+.main .image-container .image {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main .image-container .image img {
+  width: 1000px; /* Adjust icon size */
+  
+  margin-right: 5px;
+  
+  align-items: center;
+}
+
+.main .image-container h1 {
+  color: #00bcd4;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 40px;
+}
+
+.main .image-container p {
+  color: #324042;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.main .image-container h6 {
+  color: #324042;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.main .input {
+  justify-content: center;
+  align-items: center;
+  width: 40vw;
+  height: 50px;
+  border-radius: 20px;
+  background: rgb(202 253 255 / 50%);
+}
+
+.main .input {
+  background: transparent;
+  outline: none;
+  border: none;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.main .input .talk img {
+  display: inline-flex;
+}
+
+.main .input .content {
+  color: #aed0d0;
+  font-size: 15px;
+  margin-right: 20px;
+}
+/* Doubt.css */
+
+.input {
+  /* Your input container styles here */
+  /* For example: */
+  display: flex;
+  align-items: center;
+}
+
+.talk {
+  /* Your talk button styles here */
+  /* For example: */
+  background-color: #000000; /* Adjust to your desired color */
+  color: #fff; /* Text color */
+  border: none; /* Remove default button border */
+  padding: 100px; /* Adjust padding */
+  font-size: 76px; /* Adjust font size */
+  cursor: pointer; /* Show pointer on hover */
+}
+
+.talk img {
+  /* Your microphone icon styles here */
+  /* For example: */
+  width: 70px; /* Adjust icon size */
+  height: 70px; /* Adjust icon size */
+  margin-right: 5px; /* Adjust spacing between icon and text */
+}
+.back{
+  
+    /* Your talk button styles here */
+    /* For example: */
+    background-color: #000000; /* Adjust to your desired color */
+    color: #fff; /* Text color */
+    border: none; /* Remove default button border */
+    padding: 100px; /* Adjust padding */
+    font-size: 76px; /* Adjust font size */
+    cursor: pointer; /* Show pointer on hover */
+}
+
+
