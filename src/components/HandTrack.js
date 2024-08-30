@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { load, startVideo, stopVideo } from 'handtrackjs';
+import * as tf from '@tensorflow/tfjs';
 import { useNavigate } from 'react-router-dom';
 import 'carbon-components/css/carbon-components.css';
 import './HandTrack.css';
@@ -10,22 +10,15 @@ const HandTrack = () => {
   const canvasRef = useRef(null);
   const [isVideo, setIsVideo] = useState(false);
   const [model, setModel] = useState(null);
-  const [updateNote, setUpdateNote] = useState('loading model ..');
+  const [updateNote, setUpdateNote] = useState('Loading model ..');
   const [pausedTime, setPausedTime] = useState(0);
   const [pt, setPt] = useState(0); 
   const navigate = useNavigate();
 
-  const modelParams = {
-    flipHorizontal: true,
-    maxNumBoxes: 20,
-    iouThreshold: 0.5,
-    scoreThreshold: 0.6,
-  };
-
   useEffect(() => {
     const video = videoRef.current;
 
-    load(modelParams).then(lmodel => {
+    tf.loadLayersModel('/path_to_your_model/model.json').then(lmodel => {
       setModel(lmodel);
       setUpdateNote('Loaded Model!');
     });
@@ -50,7 +43,7 @@ const HandTrack = () => {
 
   const startVideoHandler = () => {
     const videoElement = videoRef.current;
-    const savedPausedTime = pt; // Use pt here
+    const savedPausedTime = pt; 
     console.log(pt);
     if (savedPausedTime) {
       demoVideoRef.current.currentTime = savedPausedTime;
@@ -75,9 +68,9 @@ const HandTrack = () => {
     stopVideo(videoRef.current);
     setIsVideo(false);
     setUpdateNote('Video stopped');
-    const currentTime = demoVideoRef.current.currentTime; // Update pt with current time
+    const currentTime = demoVideoRef.current.currentTime;
     setPt(currentTime);
-    localStorage.setItem('pt', currentTime); // Save pt to localStorage
+    localStorage.setItem('pt', currentTime); 
     demoVideoRef.current.pause();
 
     console.log(currentTime);
@@ -87,7 +80,7 @@ const HandTrack = () => {
 
   const startOverHandler = () => {
     setPt(0);
-    localStorage.setItem('pt', 0); // Reset pt to 0 in localStorage
+    localStorage.setItem('pt', 0); 
     setUpdateNote('Starting over');
   };
 
@@ -104,19 +97,26 @@ const HandTrack = () => {
   const runDetection = () => {
     if (!model) return;
 
-    model.detect(videoRef.current).then(predictions => {
-      model.renderPredictions(predictions, canvasRef.current, canvasRef.current.getContext('2d'), videoRef.current);
-      requestAnimationFrame(runDetection);
-      const openHandPredictions = predictions.filter(prediction => 
-        prediction.label === 'open' && parseFloat(prediction.score) > 0.7);
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
 
-      if (openHandPredictions.length > 0) {
+    const detectFrame = async () => {
+      if (!isVideo) return;
+
+      const inputTensor = tf.browser.fromPixels(video).resizeNearestNeighbor([224, 224]).expandDims(0).toFloat().div(tf.scalar(255));
+
+      const predictions = await model.predict(inputTensor).data();
+
+      if (predictions[0] > 0.7) { 
         stopVideoHandler();
       }
-    }).catch(error => {
-      console.error('Error during detection:', error);
-      setUpdateNote('Error during detection');
-    });
+
+
+      requestAnimationFrame(detectFrame);
+    };
+
+    detectFrame();
   };
 
   return (
@@ -135,7 +135,7 @@ const HandTrack = () => {
       </div>
       <div className='vid'>
         <video className="videobox canvasbox" autoPlay playsInline ref={videoRef}></video>
-        <div className="mainvid"><video className="videobox"  playsInline loop src="/demo.mp4" ref={demoVideoRef}></video></div>
+        <div className="mainvid"><video className="videobox" playsInline loop src="/demo.mp4" ref={demoVideoRef}></video></div>
         <canvas id="canvas" className="border canvasbox" ref={canvasRef}></canvas>
       </div>
     </div>
