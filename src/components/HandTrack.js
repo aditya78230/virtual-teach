@@ -126,7 +126,7 @@ const HandTrack = () => {
       </div>
       <div className="mb10">
         <button onClick={toggleVideo} className="glow-on-hover" type="button">
-          Toggle Video
+          Start/Resume Video
         </button>
         <button onClick={startOverHandler} className="glow-on-hover" type="button">
           Start Over
